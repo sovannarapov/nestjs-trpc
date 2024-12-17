@@ -15,21 +15,21 @@ import { IAppContext } from 'src/trpc/context/context.interface';
 @Router({ alias: 'products' })
 @UseMiddlewares(LoggerMiddleware)
 export class ProductsRouter {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly _productsService: ProductsService) {}
 
   @Query({
     input: z.object({ id: z.string() }),
     output: productSchema,
   })
   getProductById(@Input('id') id: string) {
-    return this.productsService.getProductById(id);
+    return this._productsService.getProductById(id);
   }
 
   @Query({
     output: z.array(productSchema),
   })
   getAllProducts() {
-    return this.productsService.getAllProducts();
+    return this._productsService.getAllProducts();
   }
 
   @Mutation({
@@ -43,7 +43,7 @@ export class ProductsRouter {
     @Input('id') id: string,
     @Input('data') data: Partial<Product>,
   ) {
-    return this.productsService.updateProduct(id, data);
+    return this._productsService.updateProduct(id, data);
   }
 
   @Mutation({
@@ -52,7 +52,7 @@ export class ProductsRouter {
   })
   createProduct(@Input() productData: Product, @Ctx() context: IAppContext) {
     console.log('App Context:', context);
-    return this.productsService.createProduct(productData);
+    return this._productsService.createProduct(productData);
   }
 
   @Mutation({
@@ -60,6 +60,6 @@ export class ProductsRouter {
     output: z.boolean(),
   })
   deleteProduct(@Input('id') id: string) {
-    return this.productsService.deleteProduct(id);
+    return this._productsService.deleteProduct(id);
   }
 }
